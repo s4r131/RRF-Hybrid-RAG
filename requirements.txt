@@ -1,0 +1,21 @@
+# Core LangChain Framework
+langchain
+langchain-community
+langchain-core
+langchain-text-splitters
+
+# Vector Database & Local Embeddings
+chromadb
+langchain-chroma
+langchain-huggingface
+sentence-transformers
+rank-bm25
+
+# LLM Providers (Google Gemini & OpenAI)
+langchain-google-genai
+langchain-openai
+
+# Document Parsing, Env Config & Web UI
+pymupdf
+python-dotenv
+streamlit

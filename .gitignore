@@ -1,0 +1,14 @@
+# 1. Secret environment variables (NEVER upload API keys to Github!)
+.env
+
+# 2. Python virtual env & auto-generated cache files
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# 3. Local Vector Database & Raw Dataset Folders
+chroma_db/
+RSO Supplemental Materials/
+docs/
+*.zip

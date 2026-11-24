@@ -1,36 +1,38 @@
 # RRF-Hybrid-RAG: Multi-Stage Retrieval & Evaluation Engine
 
-A domain-agnostic, production-engineered **Retrieval-Augmented Generation (RAG)** system built with **LangChain**, **ChromaDB**, **HuggingFace (`BAAI/bge-small-en-v1.5`)**, **BM25 (`rank-bm25`)**, **Cross-Encoder Reranking (`cross-encoder/ms-marco-MiniLM-L-6-v2`)**, **RAGAS**, and **Google Gemini 3.8 Flash / OpenAI**.
+A domain-agnostic, production-engineered **Retrieval-Augmented Generation (RAG)** system built with **LangChain**, **ChromaDB**, **HuggingFace (`BAAI/bge-small-en-v1.5`)**, **BM25 (`rank-bm25`)**, **Cross-Encoder Reranking (`cross-encoder/ms-marco-MiniLM-L-6-v2`)**, **RAGAS**, and **Google Gemini (`gemini-3.5-flash-lite` / `gemini-3.5-flash`) / OpenAI (`gpt-4o-mini` / `gpt-4o`)**.
 
-Designed to scale across hundreds of PDFs and thousands of pages of complex technical manuals, compliance specifications, or research documents, this pipeline achieves **100.0% Source Hit@10**, **100.0% Target-Fact Recall**, and **0.22s average local retrieval latency** on an **8-query retrieval sanity benchmark** over a **17,444-chunk (6,704-page)** technical corpus—while automatically preserving folder hierarchies as filterable category metadata.
+Designed to scale across hundreds of PDFs and thousands of pages of technical manuals, regulatory specifications, or research documents, this pipeline was evaluated across **36 ground-truth queries spanning 36 unique PDFs and 14 categories repeated across 3 runs (540 evaluations)** over a **17,444-chunk (6,579-page, 158-file)** corpus. At the same `k=10` cutoff, Hybrid RRF + Cross-Encoder Reranking raised **Source Hit@10 from `91.7%` to `100.0%`**, **MRR from `0.772` to `0.905`**, and **Target-Fact Recall from `88.7%` to `95.6%`** (with Full-Page Expansion) at **`0.224s` average local retrieval latency**, while automatically preserving folder hierarchies as filterable category metadata.
 
 ---
 
 ## Benchmark & Ablation Results
 
-Evaluated locally on an **8-query retrieval ablation benchmark** (spanning broad conceptual queries, multi-part specifications, and exact regulatory/form code lookups) over a **17,444-chunk, 6,704-page** multi-document corpus:
+Reproduced locally via `python benchmark_retrieval.py --runs 3` on **`eval_dataset.json`** (**36 queries × 3 runs = 540 total runs**, exported to [`retrieval_benchmark_results.csv`](retrieval_benchmark_results.csv)) over the indexed **17,444-chunk, 6,579-page, 158-file** corpus:
 
-### 1. Before vs. After Retrieval Pipeline Ablation
+### 1. Apples-to-Apples Retrieval Pipeline Ablation (`k=5` and `k=10`)
 
-| Pipeline Configuration | Source Hit@K | Target-Fact Recall | MRR | Avg Context Returned | Boundary Duplicates Removed | Avg Local Retrieval Latency |
+| Pipeline Configuration | `K` | Source Hit@K | MRR | Target-Fact Recall | Avg Context Returned | Avg Local Retrieval Latency |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Baseline (`v1`: Dense Vector Similarity, `k=5`, raw chunks)** | `87.5%` | `87.5%` | **`0.629`** | `4,572` chars | `0.0%` | `0.01s` |
-| **Upgraded (`v2`: Hybrid RRF + Cross-Encoder + Full-Page, `k=5`)** | `87.5%` | `90.6%` | `0.567` | `9,670` chars (**2.1x**) | `13.5%` | `0.15s` |
-| **Production (`v2`: Hybrid RRF + Cross-Encoder + Full-Page, `k=10`)** | **`100.0%`** | **`100.0%`** | `0.567` | **`18,755` chars (4.1x)** | **`13.5%`** | **`0.22s`** |
+| **Dense Vector Baseline (`raw chunks`)** | `5` | `88.9%` | `0.767` | `84.5%` | `4,382` chars | `0.009s ± 0.001s` |
+| **Hybrid RRF + Cross-Encoder + Full-Page (`v2`)** | `5` | **`100.0%`** | **`0.913`** | `90.7%` | `10,881` chars (**2.5x**) | `0.163s ± 0.027s` |
+| **Dense Vector Baseline (`raw chunks`)** | `10` | `91.7%` | `0.772` | `88.7%` | `8,708` chars | `0.011s ± 0.002s` |
+| **Hybrid RRF + Cross-Encoder (`chunks only`)** | `10` | **`100.0%`** | **`0.905`** | `93.5%` | `9,102` chars (**1.05x**) | `0.190s ± 0.053s` |
+| **Production (`Hybrid RRF + Cross-Encoder + Full-Page`)** | `10` | **`100.0%`** | **`0.905`** | **`95.6%`** | **`21,253` chars (2.4x)** | **`0.224s ± 0.048s`** |
 
-### 2. Caching & Engineering Impact
+### 2. Component Isolation & Engineering Impact
 
 | Optimization | Before | After | Measured Gain |
 | :--- | :---: | :---: | :---: |
-| **BM25 Index Caching (`@lru_cache(maxsize=32)`)** | `527.0 ms` / query (full 17,444-chunk rebuild) | **`33.56 µs`** warm lookup (`1.78s` cold load) | **~15,700x faster** index lookup |
-| **Exact Code / Identifier Queries (4-query subset)** | `75.0%` Hit@K (missed sparse notice code `0.0%`) | **`100.0%` Hit@K / `100.0%` Fact Recall** | Rescues sparse identifier misses |
-| **Suffix-Prefix Page Stitching (`merge_overlapping_chunks`)** | Raw fragments / repeated overlap seams | Complete PDF pages with **13.5%** boundary dedup | **4.1x** richer, seamless LLM context |
+| **Hybrid RRF + Cross-Encoder (`k=10`, chunks only vs. Dense@10)** | `91.7%` Hit@10 / `0.772` MRR / `88.7%` Recall | **`100.0%` Hit@10 / `0.905` MRR / `93.5%` Recall** | **+8.3 pts** Hit@10, **+0.133** MRR at ~equal char count |
+| **Full-Page Expansion (`Hybrid@10 chunks` $\rightarrow$ `+ Full-Page`)** | `93.5%` Fact Recall (`9,102` chars) | **`95.6%` Fact Recall (`21,253` chars)** | Completes cut-off tables & lists cleanly |
+| **BM25 Index Caching (`@lru_cache(maxsize=32)`)** | `556.1 ms` / query (17,444-chunk rebuild) | **`37.25 µs`** warm lookup (`1.80s` cold load) | **~14,900x faster** warm index lookup |
 
-### Key Takeaways & Honest Trade-Offs
-* **Hybrid RRF Rescues Sparse Identifier Lookups**: Dense embeddings alone (`v1`) completely missed an exact regulatory notice code (`Hit=0`, `FactRecall=0.0%`), whereas BM25 + RRF + Cross-Encoder (`v2`, `k=10`) recovered it cleanly (`Hit=1`, `FactRecall=100.0%`).
-* **Why `TOP_K_RESULTS = 10` Matters for Two-Stage Reranking**: At `k=5`, MMR's diversity penalty occasionally pushed a primary textbook page out behind a quiz/summary page (`25.0%` recall on one conceptual query). Expanding the pool to `k=10` (`2k = 20` RRF candidates) gave the Cross-Encoder enough coverage to promote the true answer page to **Rank #1** (`100.0%` recall) in **`0.22s`**.
-* **Diversity vs. Single-Target MRR (`0.629 -> 0.567`)**: Because MMR deliberately penalizes redundant documents to surface multiple relevant manuals (and `k=10` returns **4.1x** more context, ~4,500 tokens), single-document MRR dipped slightly while overall coverage (`Hit@10` and `Fact Recall`) hit **100.0%**.
-* **Evaluation Scope**: Local ablation metrics reflect an 8-query retrieval sanity suite (checking target document presence and key ground-truth term coverage). End-to-end LLM-as-a-judge scoring (**Context Precision**, **Context Recall**, **Faithfulness**, and **Answer Relevancy**) is implemented in `evaluate.py` with `RunConfig(max_workers=2, max_retries=6)`.
+### Key Takeaways & Evaluation Design
+* **Consistent Gains at Identical `K`**: Holding `k` constant, Hybrid RRF + Cross-Encoder beats Dense Vector search at both cutoffs—raising Hit@5 (`88.9%` $\rightarrow$ **`100.0%`**) and MRR@5 (`0.767` $\rightarrow$ **`0.913`**), as well as Hit@10 (`91.7%` $\rightarrow$ **`100.0%`**) and MRR@10 (`0.772` $\rightarrow$ **`0.905`**).
+* **Hybrid RRF Rescues Sparse Identifier Misses**: At `k=10`, Dense Vector similarity alone missed all chunks from **3 target files** containing specific document/form identifiers (`NRC Regulatory Guide 8-40.pdf`, `NRC_313a(amp).pdf`, and `moe section 1.pdf`). BM25 + RRF + Cross-Encoder recovered all three (**`100.0%` Hit@10**) before any full-page expansion was applied.
+* **Isolating Reranking from Context Expansion**: Comparing `Hybrid@10 (chunks only)` (`9,102` chars) against `Dense@10` (`8,708` chars) proves that nearly all ranking precision (**`0.905` vs `0.772` MRR**) and +4.8 percentage points of Fact Recall (`88.7%` $\rightarrow$ `93.5%`) come directly from RRF + Cross-Encoder reranking rather than larger context windows; Stage 3 Full-Page Expansion then lifts Fact Recall further to **`95.6%`**.
+* **Independent-Judge RAGAS Suite (`evaluate.py`)**: Answer generation (`get_llm()`, defaulting to `gemini-3.5-flash-lite` or `gpt-4o-mini`) and RAGAS evaluation (`get_judge_llm()`, defaulting to `gemini-3.5-flash` or cross-provider `gpt-4o` when both keys are set) strictly enforce **distinct models** (raising a `ValueError` if equal) so the generator never grades its own outputs. The suite loads all 36 queries from `eval_dataset.json`, supports `--runs N` repeated averages with `ResponseRelevancy(strictness=1)` and `RunConfig(max_workers=4, timeout=300)`, and exports per-question scores to `ragas_evaluation_results.csv`. End-to-end 36-query RAGAS execution requires an API billing tier beyond Google's 20-request/day Free Tier Flash quota (approx. 11+ judge LLM calls per full-page query).
 
 ---
 
@@ -156,7 +158,7 @@ if overlap_len > 0:
 else:
     full_page_text += "\n" + text
 ```
-This reconstructs the **exact original PDF page** cleanly before sending the context to the LLM, removing **13.5%** of redundant overlap characters across multi-chunk pages.
+This reconstructs the **exact original PDF page** cleanly before sending the context to the LLM without duplicating suffix-prefix overlap seams across multi-chunk pages.
 
 ---
 
@@ -181,8 +183,8 @@ def get_bm25_index(category: str = "All"):
 def get_reranker(model_name: str = RERANKER_MODEL_NAME) -> CrossEncoder:
     ...
 ```
-* **Why?** Without caching, every user question in Streamlit would reload 199 embedding model weights from disk and re-tokenize all 17,444 chunks to rebuild `BM25Okapi` (`527.0 ms` per turn).
-* **How it works:** `@lru_cache` memoizes models in RAM (`maxsize=1`) and caches pre-built `BM25Okapi` indices per category filter (`maxsize=32`), reducing warm index lookup time to **`33.56 µs` (~15,700x faster)**.
+* **Why?** Without caching, every user question in Streamlit would reload 199 embedding model weights from disk and re-tokenize all 17,444 chunks to rebuild `BM25Okapi` (`556.1 ms` per turn).
+* **How it works:** `@lru_cache` memoizes models in RAM (`maxsize=1`) and caches pre-built `BM25Okapi` indices per category filter (`maxsize=32`), reducing warm index lookup time to **`37.25 µs` (~14,900x faster)**.
 
 ### 2. Local-First Embedding Loading with Automatic Cloud Fallback
 In `get_embedding_model()`, we attempt `model_kwargs={"local_files_only": True}` inside a `try / except` block:
@@ -208,22 +210,25 @@ Rather than blindly concatenating prior chat turns onto every query (which pollu
 
 ```text
 RRF-Hybrid-RAG/
-├── data/                         # Raw PDF dataset organized by category subfolders (git-ignored)
-├── chroma_db/                    # Persisted ChromaDB vector store on disk (git-ignored)
-├── src/                          # Core modular RAG library
-│   ├── __init__.py               # Package marker
-│   ├── config.py                 # Central paths, chunk hyperparameters, and env-overridable models
-│   ├── document_loader.py        # Recursive PDF scanner, deduplicator, and metadata enricher
-│   ├── chunker.py                # RecursiveCharacterTextSplitter with start_index tracking
-│   ├── vector_store.py           # Cached local BGE embeddings & batched ChromaDB persistence
-│   └── rag_chain.py              # Hybrid Search (MMR + BM25 RRF), Cross-Encoder, page stitching & streaming
-├── ingest.py                     # CLI entry point to build/rebuild the vector store
-├── app.py                        # Interactive Streamlit chat UI with startup guards, category filters & citations
-├── evaluate.py                   # Automated RAGAS evaluation suite (Precision, Recall, Faithfulness, Relevancy)
-├── .env.example                  # Template for environment variables (API keys & optional DATA_DIR)
-├── .gitignore                    # Excludes secrets (.env), .venv, chroma_db, and raw PDFs
-├── requirements.txt              # Project dependencies
-└── README.md                     # Architecture, benchmark data & mathematical documentation
+├── data/                            # Raw PDF dataset organized by category subfolders (git-ignored)
+├── chroma_db/                       # Persisted ChromaDB vector store on disk (git-ignored)
+├── src/                             # Core modular RAG library
+│   ├── __init__.py                  # Package marker
+│   ├── config.py                    # Paths, chunk hyperparameters, generator & judge model configs
+│   ├── document_loader.py           # Recursive PDF scanner, deduplicator, and metadata enricher
+│   ├── chunker.py                   # RecursiveCharacterTextSplitter with start_index tracking
+│   ├── vector_store.py              # Cached local BGE embeddings & batched ChromaDB persistence
+│   └── rag_chain.py                 # Hybrid Search (MMR + BM25 RRF), Cross-Encoder, page stitching & streaming
+├── ingest.py                        # CLI entry point to build/rebuild the vector store
+├── app.py                           # Interactive Streamlit chat UI with startup guards, category filters & citations
+├── benchmark_retrieval.py           # Reproducible apples-to-apples retrieval ablation runner (--runs 3)
+├── evaluate.py                      # Independent-judge RAGAS evaluation suite (--limit, --runs)
+├── eval_dataset.json                # 36 verified ground-truth Q&A queries spanning 36 PDFs & 14 categories
+├── retrieval_benchmark_results.csv  # Saved 540-row ablation benchmark dataset (36 queries x 3 runs x 5 configs)
+├── .env.example                     # Template for environment variables (API keys, judge models, DATA_DIR)
+├── .gitignore                       # Excludes secrets (.env), .venv, chroma_db, and raw PDFs
+├── requirements.txt                 # Project dependencies
+└── README.md                        # Architecture, benchmark data & mathematical documentation
 ```
 
 ---
@@ -260,9 +265,16 @@ streamlit run app.py
 ```
 Open `http://localhost:8501` in your browser to ask questions, filter by document category, tune `Top-K` retrieval live, and inspect full-page source citations.
 
-### 5. Run the RAGAS Evaluation Suite
-Update `EVAL_TEST_SET` in `evaluate.py` with your target benchmark questions and ground-truth references, then run:
+### 5. Reproduce the Retrieval Ablation Benchmark
+Run the reproducible apples-to-apples dense vs. hybrid retrieval comparison (`Dense@5`, `Hybrid@5`, `Dense@10`, `Hybrid@10 chunks-only`, and `Hybrid@10 + Full-Page`) across 36 queries and 3 repeated runs:
 ```powershell
-python evaluate.py
+python benchmark_retrieval.py --runs 3
 ```
-This outputs aggregate scores and exports detailed per-question results to `ragas_evaluation_results.csv`.
+This exports all 540 per-run records to `retrieval_benchmark_results.csv` and prints aggregate Hit@K, MRR, Target-Fact Recall, and latency.
+
+### 6. Run the Independent-Judge RAGAS Suite
+Evaluate end-to-end Context Precision, Context Recall, Faithfulness, and Answer Relevancy using `eval_dataset.json` and a strictly distinct judge model (`gpt-4o` cross-provider when both keys are set, or `gemini-3.5-flash` judging `gemini-3.5-flash-lite`):
+```powershell
+python evaluate.py --runs 2
+```
+Use `--limit N` (for a subset) or `--runs R` (to report multi-run averages) and inspect detailed per-question metrics in `ragas_evaluation_results.csv`. Note: running all 36 queries requires a paid/Tier-1 API quota due to multi-call per-page RAGAS grading (~11+ judge calls per query).

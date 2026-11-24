@@ -1,0 +1,290 @@
+[
+  {
+    "id": "Q01",
+    "category": "CRCPD Suggested State Regulations",
+    "user_input": "What are the requirements for a therapeutic radiation machine treatment room operating above 500 kV?",
+    "expected_file": "SSRCR_Part_X_Therapeutic Radiation Machines.pdf",
+    "required_facts": ["fixed", "control panel", "outside", "shielding"],
+    "reference": "All protective barriers must be fixed except for access doors to the treatment room or movable beam interceptors, the control panel must be located outside the treatment room, and adequate shielding must be provided."
+  },
+  {
+    "id": "Q02",
+    "category": "NUREG 1556",
+    "user_input": "What facility and equipment diagrams must applicants submit for rooms where radioactive materials are used?",
+    "expected_file": "NUREG1556v07.pdf",
+    "required_facts": ["shielding", "unrestricted", "ventilation", "diagram"],
+    "reference": "Applicants must describe assigned areas for receipt, storage, preparation, and measurement of radioactive materials and submit scale diagrams showing shielding locations, proximity to unrestricted areas, and ventilation schematics if materials may become airborne."
+  },
+  {
+    "id": "Q03",
+    "category": "ANL 88-26 Operational Health Physics Handbook",
+    "user_input": "What are the four main types of ionizing radiation discussed in basic health physics?",
+    "expected_file": "moe section 3.pdf",
+    "required_facts": ["alpha", "beta", "gamma", "neutron"],
+    "reference": "The four main types of radiation dealt with in health physics are alpha particles, beta particles, gamma and X rays (counted as one type), and neutrons."
+  },
+  {
+    "id": "Q04",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What is NRC Form 540 used for in low-level radioactive waste shipping?",
+    "expected_file": "NRC_540.pdf",
+    "required_facts": ["manifest", "540", "shipper", "collector"],
+    "reference": "NRC Form 540 is the Uniform Low-Level Radioactive Waste Manifest shipping paper used to document shipper, collector, and waste shipment details."
+  },
+  {
+    "id": "Q05",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What are the Container Description Codes and structural overpack (-OP) rules on NRC Form 541?",
+    "expected_file": "NRC_541.pdf",
+    "required_facts": ["overpack", "-op", "541", "container"],
+    "reference": "On NRC Form 541, Container Description Codes for containers or waste requiring disposal in approved structural overpacks must have the numerical code followed by -OP."
+  },
+  {
+    "id": "Q06",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What is NRC Form 542 used for on the Uniform Low-Level Radioactive Waste Manifest?",
+    "expected_file": "NRC_542.pdf",
+    "required_facts": ["542", "manifest index", "regional compact"],
+    "reference": "NRC Form 542 is the Manifest Index and Regional Compact Tabulation form of the Uniform Low-Level Radioactive Waste Manifest."
+  },
+  {
+    "id": "Q07",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What does NRC Regulatory Issue Summary 2004-17 say about revised decay-in-storage provisions for radioactive waste?",
+    "expected_file": "NRC_RIS-200417r1_decay-in-storage.pdf",
+    "required_facts": ["decay-in-storage", "2004-17", "byproduct"],
+    "reference": "NRC Regulatory Issue Summary 2004-17, Revision 1 addresses revised decay-in-storage provisions for storing radioactive waste containing byproduct material."
+  },
+  {
+    "id": "Q08",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What does NRC Information Notice 94-07 state about solubility criteria for liquid effluent releases to sanitary sewerage?",
+    "expected_file": "NRC_IN-94-07.pdf",
+    "required_facts": ["94-07", "20.2003", "0.003", "soluble"],
+    "reference": "NRC Information Notice 94-07 addresses solubility criteria under 10 CFR 20.2003(a)(1) for liquid effluent releases to sanitary sewerage, noting that formal solubilities below 0.003 mole/liter indicate compounds not readily soluble."
+  },
+  {
+    "id": "Q09",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What does NRC Information Notice 99-33 advise medical licensees regarding landfills and medical waste incinerators?",
+    "expected_file": "NRC_IN-99-33.pdf",
+    "required_facts": ["99-33", "landfill", "incinerator", "medical"],
+    "reference": "NRC Information Notice 99-33 advises NRC medical licensees that operators of most landfills and medical waste incinerators are not licensed to manage low-level radioactive materials."
+  },
+  {
+    "id": "Q10",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What does RIS 2008-12 state regarding extended radioactive waste storage versus disposal?",
+    "expected_file": "NRC_RIS-2008-12 Extended Radwaste Storage.pdf",
+    "required_facts": ["2008-12", "storage", "disposal"],
+    "reference": "NRC RIS 2008-12 on extended low-level radioactive waste storage emphasizes that storage is not a substitute for disposal."
+  },
+  {
+    "id": "Q11",
+    "category": "Sec 220 - Waste_Radioactive Waste Management",
+    "user_input": "What is the purpose of Regulatory Guide 1.86 regarding termination of operating licenses for nuclear reactors?",
+    "expected_file": "NRC_Reg-Guide_1.86_Reactor_License_Termination.pdf",
+    "required_facts": ["1.86", "physical barriers", "survey", "unrestricted"],
+    "reference": "Regulatory Guide 1.86 covers reactor license termination, requiring remaining radioactive materials to be isolated by physical barriers and a comprehensive radiation survey prior to release for unrestricted use."
+  },
+  {
+    "id": "Q12",
+    "category": "Sec 030 - Fundamentals B",
+    "user_input": "How must records of dose to an embryo or fetus be maintained according to Regulatory Guide 8.13?",
+    "expected_file": "Reg Guide 08-013.pdf",
+    "required_facts": ["8.13", "embryo", "fetus", "declared pregnant"],
+    "reference": "Under Regulatory Guide 8.13 on prenatal radiation exposure, records of dose to an embryo or fetus if monitoring was required must be kept with the records of dose to the declared pregnant woman."
+  },
+  {
+    "id": "Q13",
+    "category": "Sec 080 - External Dosimetry_External Radiation Protection & Shielding",
+    "user_input": "When must licensees provide additional dosimeters according to NRC Regulatory Guide 8.40?",
+    "expected_file": "NRC Regulatory Guide 8-40.pdf",
+    "required_facts": ["20.1502", "dosimeter", "icrp", "weighting"],
+    "reference": "NRC Regulatory Guide 8.40 notes licensees will most likely need additional dosimeters when 10 CFR 20.1502 requires individual monitoring and references ICRP Publication 26 tissue weighting factors."
+  },
+  {
+    "id": "Q14",
+    "category": "Sec 151 - Rad Surveys_Radiation Safety Surveys",
+    "user_input": "What does Regulatory Guide 4.22 address regarding decommissioning planning during operations under 10 CFR Part 20 Subpart E?",
+    "expected_file": "Reg_Guide_4-22_Decommissioning_Planning_During_Operations.pdf",
+    "required_facts": ["4.22", "subpart e", "decommissioning", "contamination"],
+    "reference": "Regulatory Guide 4.22 addresses decommissioning planning under 10 CFR Part 20 Subpart E, providing guidance to design facilities and procedures to minimize waste generation and facility contamination."
+  },
+  {
+    "id": "Q15",
+    "category": "Sec 100 - Sealed Sources_Industrial Gauges",
+    "user_input": "What information is reported on NRC Form 653 under 10 CFR 32 for industrial device transfers?",
+    "expected_file": "NRC_653.pdf",
+    "required_facts": ["653", "10 cfr 32", "general licensee", "vendor"],
+    "reference": "NRC Form 653 under 10 CFR 32 is the Transfers of Industrial Devices Report to General Licensees, capturing vendor, license number, reporting period, and general licensee location details."
+  },
+  {
+    "id": "Q16",
+    "category": "Sec 070 - Licensing Med_Medical Use Licensing",
+    "user_input": "What is NRC Form 313A (AMP) under 10 CFR 35.51 used to document?",
+    "expected_file": "NRC_313a(amp).pdf",
+    "required_facts": ["313a", "35.51", "authorized medical physicist", "preceptor"],
+    "reference": "NRC Form 313A (AMP) under 10 CFR 35.51 documents Authorized Medical Physicist training and experience and includes the preceptor attestation."
+  },
+  {
+    "id": "Q17",
+    "category": "Sec 160 - Security of RAM",
+    "user_input": "What did the GAO-12-925 report find about security of high-risk radiological sources at U.S. medical facilities?",
+    "expected_file": "GAO-report-2012.pdf",
+    "required_facts": ["gao-12-925", "nnsa", "medical", "security"],
+    "reference": "GAO-12-925 examined radiological source security at U.S. medical facilities, finding NRC requirements and implementation did not ensure security of high-risk sources and describing NNSA security upgrades."
+  },
+  {
+    "id": "Q18",
+    "category": "Sec 190 - Transportation",
+    "user_input": "What components must be included in a hazardous materials transportation security plan under Enhanced Security Requirements?",
+    "expected_file": "EnhancedSecurityRequirements(General).pdf",
+    "required_facts": ["security objectives", "employee responsibilities", "security breach"],
+    "reference": "A transportation security plan must include company security objectives, specific security procedures, employee responsibilities, actions to take in a security breach, and organizational security structure."
+  },
+  {
+    "id": "Q19",
+    "category": "Sec 160 - Security of RAM",
+    "user_input": "Within how many days must a shipping licensee submit a written report for lost or missing Category 2 radioactive material under RIS 2015-03?",
+    "expected_file": "NRC RIS 2015-03 Reporting Security Incidents.pdf",
+    "required_facts": ["2015-03", "30 days", "37.81", "category 2"],
+    "reference": "Under RIS 2015-03 and 10 CFR 37.81(g), a shipping licensee must submit a written report to the NRC within 30 days of an initial report of lost, missing, or diverted Category 2 quantities of radioactive material."
+  },
+  {
+    "id": "Q20",
+    "category": "Sec 160 - Security of RAM",
+    "user_input": "What does NUREG-2155 provide guidance on regarding 10 CFR Part 37?",
+    "expected_file": "NUREG-2155 Implementation Guidance for 10 CFR part 37.pdf",
+    "required_facts": ["part 37", "category 1", "category 2", "subpart d"],
+    "reference": "NUREG-2155 provides implementation guidance for 10 CFR Part 37 on physical protection of Category 1 and Category 2 quantities of radioactive material, including Subpart D transport and import/export scope."
+  },
+  {
+    "id": "Q21",
+    "category": "CRCPD Suggested State Regulations",
+    "user_input": "How do SSRCR Part A General Provisions define airborne radioactive material and bioassay?",
+    "expected_file": "SSRCR_Part A_General Provisions.pdf",
+    "required_facts": ["airborne radioactive material", "bioassay", "dusts", "human body"],
+    "reference": "SSRCR Part A defines airborne radioactive material as radioactive material dispersed in air as dusts, fumes, particulates, mists, vapors, or gases, and bioassay as determining radioactive material in the human body."
+  },
+  {
+    "id": "Q22",
+    "category": "Sec 230 - X-Ray_X-ray Safety",
+    "user_input": "What must be submitted prior to construction for radiation machine shielding plan review under SSRCR Part B Sec. B.4?",
+    "expected_file": "SSRCR_Part B_Registration of Radiation Machine Facilities and Services.pdf",
+    "required_facts": ["b.4", "floor plans", "shielding specifications", "equipment arrangement"],
+    "reference": "Under SSRCR Part B Sec. B.4, prior to construction, the floor plans, shielding specifications, and equipment arrangement of new installations must be submitted for shielding plan review."
+  },
+  {
+    "id": "Q23",
+    "category": "CRCPD Suggested State Regulations",
+    "user_input": "What does SSRCR Part D Sec. D.1101 require regarding radiation protection programs?",
+    "expected_file": "SSRCR_Part D_Standards for Protection Against Radiation.pdf",
+    "required_facts": ["d.1101", "d.2102", "radiation protection program"],
+    "reference": "Under SSRCR Part D Sec. D.1101, each licensee or registrant must develop, document, and implement a radiation protection program sufficient to ensure compliance with D.2102 recordkeeping requirements."
+  },
+  {
+    "id": "Q24",
+    "category": "Sec 230 - X-Ray_X-ray Safety",
+    "user_input": "How does SSRCR Part F define heat unit and image intensifier in diagnostic x-ray systems?",
+    "expected_file": "SSRCR_Part F_Use of X-rays in the Healing Arts.pdf",
+    "required_facts": ["heat unit", "kvp", "image intensifier", "light image"],
+    "reference": "SSRCR Part F defines a heat unit as the product of kVp x mA x second, and an image intensifier as a device that instantaneously converts an x-ray pattern into a corresponding light image of higher intensity."
+  },
+  {
+    "id": "Q25",
+    "category": "Sec 230 - X-Ray_X-ray Safety",
+    "user_input": "What warning wording is required near an analytical x-ray tube energizing switch under SSRCR Part H?",
+    "expected_file": "SSRCR_Part H_Radiation Safety Requirements for Analytical X-ray Equipment.pdf",
+    "required_facts": ["caution radiation", "energized", "switch", "x-ray tube"],
+    "reference": "SSRCR Part H requires the warning CAUTION RADIATION - THIS EQUIPMENT PRODUCES RADIATION WHEN ENERGIZED or similar wording near any switch that energizes an x-ray tube."
+  },
+  {
+    "id": "Q26",
+    "category": "CRCPD Suggested State Regulations",
+    "user_input": "What site and waste descriptions are required in a land disposal facility application under SSRCR Part M?",
+    "expected_file": "SSRCR_Part M_Licensing Requirements for Land Disposal of Radioactive Waste.pdf",
+    "required_facts": ["disposal site", "types and quantities", "proposed facilities"],
+    "reference": "SSRCR Part M requires a description of the proposed disposal site location, general character of activities, types and quantities of waste to be received and disposed of, other land uses, and proposed facilities and equipment."
+  },
+  {
+    "id": "Q27",
+    "category": "CRCPD Suggested State Regulations",
+    "user_input": "What is the annual public dose limit for operations involving TENORM under SSRCR Part N Sec. N.5?",
+    "expected_file": "SSRCR_Part N_Regulations and Licensing of TENORM.pdf",
+    "required_facts": ["tenorm", "1 millisievert", "0.1 rem", "tede"],
+    "reference": "Under SSRCR Part N Sec. N.5, persons licensed under N.10 or N.20 must conduct TENORM operations so members of the public do not exceed 1 millisievert (0.1 rem) TEDE annually."
+  },
+  {
+    "id": "Q28",
+    "category": "CRCPD Suggested State Regulations",
+    "user_input": "What descriptions and diagrams must an irradiator license application include under SSRCR Part Q?",
+    "expected_file": "SSRCR_Part Q_Licensing and Radiation Safety Requirements for Irradiators.pdf",
+    "required_facts": ["access control", "radiation monitors", "leaking sources", "interlocks"],
+    "reference": "Under SSRCR Part Q, an irradiator application must describe access control systems (Q.9), radiation monitors (Q.12), leak detection methods and sensitivity (Q.23), and include a diagram showing all interlocks and monitors."
+  },
+  {
+    "id": "Q29",
+    "category": "Sec 190 - Transportation",
+    "user_input": "What are the non-fixed surface contamination limits averaged over 300 cm2 under SSRCR Part T?",
+    "expected_file": "SSRCR_Part T_Transportation of RAM.pdf",
+    "required_facts": ["300 cm2", "4 becquerel", "0.4 becquerel", "alpha"],
+    "reference": "Under SSRCR Part T, non-fixed contamination on an accessible surface averaged over 300 cm2 must not exceed 4 Bq/cm2 (10^-4 uCi/cm2) for beta, gamma, and low-toxicity alpha emitters, or 0.4 Bq/cm2 (10^-5 uCi/cm2) for all other alpha emitters."
+  },
+  {
+    "id": "Q30",
+    "category": "Sec 050 - Regulations_Radiation Protection Standards",
+    "user_input": "What does RIS 2002-06 state about deep dose equivalent (DDE) assignment and protective apparel in medical x-ray exposure?",
+    "expected_file": "NRC Regulatory Issue Summary 2002-06.pdf",
+    "required_facts": ["2002-06", "deep dose equivalent", "protective", "highest exposure"],
+    "reference": "RIS 2002-06 requires assigned deep dose equivalent (DDE) for the highest exposed part of the body and describes acceptable alternative methods for medical x-ray exposure when a protective apron is worn."
+  },
+  {
+    "id": "Q31",
+    "category": "ANL 88-26 Operational Health Physics Handbook",
+    "user_input": "Which particle did Chadwick identify as having no electrical charge and roughly the same mass as a proton?",
+    "expected_file": "moe section 1.pdf",
+    "required_facts": ["neutron", "electrical charge", "proton", "nucleus"],
+    "reference": "He discovered an uncharged particle with roughly the same mass as a proton, called the neutron, which is contained in the atomic nucleus."
+  },
+  {
+    "id": "Q32",
+    "category": "ANL 88-26 Operational Health Physics Handbook",
+    "user_input": "Who is credited with discovering natural radioactivity while working with uranium salts and photographic plates?",
+    "expected_file": "moe section 2.pdf",
+    "required_facts": ["becquerel", "uranium", "photographic"],
+    "reference": "Henri Becquerel is credited with discovering natural radioactivity in 1896 while working with uranium salts and photographic plates."
+  },
+  {
+    "id": "Q33",
+    "category": "ANL 88-26 Operational Health Physics Handbook",
+    "user_input": "What is the SI unit and special name for absorbed dose, and how does it relate to J/kg?",
+    "expected_file": "moe section 4.pdf",
+    "required_facts": ["gray", "gy", "absorbed dose", "kerma"],
+    "reference": "The SI unit for absorbed dose is J/kg, given the special name gray (Gy) where 1 Gy = 1 J/kg."
+  },
+  {
+    "id": "Q34",
+    "category": "General",
+    "user_input": "What is the EPA indoor radon guideline cited in The Source of Radon Risk Perceptions?",
+    "expected_file": "The Source of Radon Risk Perceptions.pdf",
+    "required_facts": ["4 pci", "epa", "radon"],
+    "reference": "The Source of Radon Risk Perceptions cites the EPA indoor radon guideline of 4 pCi/L."
+  },
+  {
+    "id": "Q35",
+    "category": "NUREG 1556",
+    "user_input": "Which CFR rule grants Agreement State licensees reciprocal recognition to work in non-Agreement States according to NUREG-1556 Vol. 19?",
+    "expected_file": "NUREG1556v19.pdf",
+    "required_facts": ["150.20", "agreement state", "general license", "nrc form 241"],
+    "reference": "10 CFR 150.20 grants Agreement State licensees a general license to conduct licensed activities in non-Agreement States under reciprocal recognition via NRC Form 241."
+  },
+  {
+    "id": "Q36",
+    "category": "Sec 190 - Transportation",
+    "user_input": "Where must shipping documents (papers) be kept during road and rail hazardous materials transport according to ERG2012?",
+    "expected_file": "ERG2012-Eng.pdf",
+    "required_facts": ["cab", "motor vehicle", "rail", "shipping documents"],
+    "reference": "According to ERG2012, shipping documents (papers) are kept in the cab of a motor vehicle for road transport and with the crew/locomotive for rail transport."
+  }
+]

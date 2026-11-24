@@ -30,8 +30,11 @@ RERANKER_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 COLLECTION_NAME = "knowledge_base"
 
 # LLM Model settings (override via .env if desired)
-GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "gemini-3.8-flash")
+# Judge uses a distinct, stronger model from the generator so outputs never self-approve
+GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "gemini-3.5-flash-lite")
 OPENAI_MODEL_NAME = os.getenv("OPENAI_MODEL_NAME", "gpt-4o-mini")
+JUDGE_GEMINI_MODEL_NAME = os.getenv("JUDGE_GEMINI_MODEL_NAME", "gemini-3.5-flash")
+JUDGE_OPENAI_MODEL_NAME = os.getenv("JUDGE_OPENAI_MODEL_NAME", "gpt-4o")
 
 # Retrieval settings: number of relevant chunks to send to the LLM per question
 TOP_K_RESULTS = 10

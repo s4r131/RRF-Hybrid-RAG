@@ -10,7 +10,14 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 
-from src.config import TOP_K_RESULTS, RERANKER_MODEL_NAME, GEMINI_MODEL_NAME, OPENAI_MODEL_NAME
+from src.config import (
+    TOP_K_RESULTS,
+    RERANKER_MODEL_NAME,
+    GEMINI_MODEL_NAME,
+    OPENAI_MODEL_NAME,
+    JUDGE_GEMINI_MODEL_NAME,
+    JUDGE_OPENAI_MODEL_NAME,
+)
 from src.vector_store import get_vector_store
 
 SYSTEM_PROMPT = """You are an expert technical assistant answering questions strictly based on the provided reference documents.
@@ -29,20 +36,52 @@ Context:
 """
 
 def get_llm():
-    """Initialize the LLM based on available API keys in the .env file."""
+    """Initialize the configured generator LLM (Google Gemini default or OpenAI)."""
     if os.getenv("GOOGLE_API_KEY"):
         return ChatGoogleGenerativeAI(
             model=GEMINI_MODEL_NAME,
-            temperature=0.0,
-            thinking_level="low"
+            max_retries=4,
+            timeout=45,
         )
     elif os.getenv("OPENAI_API_KEY"):
         return ChatOpenAI(
             model=OPENAI_MODEL_NAME,
             temperature=0.0,
+            max_retries=4,
         )
     else:
         raise ValueError("No API key found! Please set GOOGLE_API_KEY or OPENAI_API_KEY in your .env file.")
+
+
+def get_judge_llm():
+    """Initialize an independent judge LLM distinct from the RAG generator (no self-grading)."""
+    has_google = bool(os.getenv("GOOGLE_API_KEY"))
+    has_openai = bool(os.getenv("OPENAI_API_KEY"))
+
+    # Prefer cross-provider judging if both keys are configured
+    if has_google and has_openai:
+        return ChatOpenAI(model=JUDGE_OPENAI_MODEL_NAME, temperature=0.0, max_retries=6)
+
+    if has_google:
+        if JUDGE_GEMINI_MODEL_NAME == GEMINI_MODEL_NAME:
+            raise ValueError(
+                f"Judge model ({JUDGE_GEMINI_MODEL_NAME}) must differ from generator model ({GEMINI_MODEL_NAME})."
+            )
+        return ChatGoogleGenerativeAI(
+            model=JUDGE_GEMINI_MODEL_NAME,
+            thinking_level="minimal",
+            max_retries=6,
+            timeout=60,
+        )
+
+    if has_openai:
+        if JUDGE_OPENAI_MODEL_NAME == OPENAI_MODEL_NAME:
+            raise ValueError(
+                f"Judge model ({JUDGE_OPENAI_MODEL_NAME}) must differ from generator model ({OPENAI_MODEL_NAME})."
+            )
+        return ChatOpenAI(model=JUDGE_OPENAI_MODEL_NAME, temperature=0.0, max_retries=6)
+
+    raise ValueError("No API key found for judge LLM! Please set GOOGLE_API_KEY or OPENAI_API_KEY in your .env file.")
 
 def tokenize(text: str) -> List[str]:
     """Split text into lowercase alphanumeric tokens for BM25 keyword matching."""
